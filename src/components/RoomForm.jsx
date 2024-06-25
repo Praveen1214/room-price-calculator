@@ -3,18 +3,16 @@ import { Icon } from "@iconify/react";
 import PriceDisplay from "./PriceDisplay";
 
 const RoomForm = () => {
-    const [roomType, setRoomType] = useState(localStorage.getItem('roomType'));
-    const [adults, setAdults] = useState(localStorage.getItem('adults'));
-    const [children, setChildren] = useState('');
-    const [childAge, setChildAge] = useState(localStorage.getItem('childAge'));
-    const [childNumber, setChildNumber] = useState(localStorage.getItem('childNumber'));
-    const [adultCost, setAdultCost] = useState(localStorage.getItem('adultCost'));
-    const [childrenCost, setChildrenCost] = useState(localStorage.getItem('childrenCost'));
-    const [totalPrice, setTotalPrice] = useState(localStorage.getItem('totalPrice'));
+    const [roomType, setRoomType] = useState("");
+    const [adults, setAdults] = useState("");
+    const [children, setChildren] = useState([]);
+    const [childAge, setChildAge] = useState("");
+    const [childNumber, setChildNumber] = useState("");
+    const [adultCost, setAdultCost] = useState(0);
+    const [childrenCost, setChildrenCost] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
 
 
-
-    // Function to save form data to Local Storage
     const saveFormDataToLocalStorage = () => {
         const formData = {
             roomType,
@@ -33,8 +31,6 @@ const RoomForm = () => {
         saveFormDataToLocalStorage();
     }, [roomType, adults, children, childAge, childNumber, adultCost, childrenCost, totalPrice]);
 
-
-    // Function to get form data from Local Storage
     useEffect(() => {
         const storedFormData = localStorage.getItem('formData');
         if (storedFormData) {
@@ -50,7 +46,6 @@ const RoomForm = () => {
         }
     }, []);
 
-
     const isLocalStorageAvailable = () => {
         try {
             localStorage.setItem('testKey', 'testValue');
@@ -60,14 +55,14 @@ const RoomForm = () => {
             return false;
         }
     };
-    
-    // Usage in your component
+
     if (!isLocalStorageAvailable()) {
-        // Handle case where Local Storage is not available
         console.error('Local Storage is not available.');
-        // Optionally, use alternative storage mechanism or UI/UX fallback
     }
-    
+
+
+
+
 
     const roomPrices = useMemo(
         () => ({
@@ -117,16 +112,35 @@ const RoomForm = () => {
 
     const addChild = () => {
         if (isPositiveInteger(childAge) && isPositiveInteger(childNumber)) {
+            const age = parseInt(childAge, 10);
+            const number = parseInt(childNumber, 10);
+    
+            if (age > 12) {
+                alert("Age should be 12 or below.");
+                return;
+            }
+    
+            const totalChildren = children.reduce((acc, child) => acc + child.number, 0) + number;
+    
+            if (totalChildren > 10) {
+                const isConfirmed = window.confirm("You have added more than 10 children. Are you sure this is correct?");
+                if (!isConfirmed) {
+                    return;
+                }
+            }
+    
             setChildren([
                 ...children,
-                { age: parseInt(childAge, 10), number: parseInt(childNumber, 10) },
+                { age, number },
             ]);
             setChildAge("");
             setChildNumber("");
         } else {
-            alert("Please Enter both valid age and number of children");
+            alert("Please enter both valid age and number of children.");
         }
     };
+    
+    
 
     const resetForm = () => {
         setRoomType("");
@@ -168,9 +182,6 @@ const RoomForm = () => {
             setTotalPrice(0);
         }
     }, [roomType, adults, children, roomPrices]);
-
-
-
 
     return (
         <>
