@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useState, useEffect } from 'react';
 import Header from "./components/Header";
 import RoomForm from "./components/RoomForm";
-import PriceDisplay from "./components/PriceDisplay";
+
 
 function App() {
   const [roomType, setRoomType] = useState(localStorage.getItem('roomType') || 'Standard Double City View');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo  } from "react";
 import { Icon } from "@iconify/react";
 import PriceDisplay from "./PriceDisplay";
 
@@ -12,12 +12,12 @@ const RoomForm = () => {
     const [childrenCost, setChildrenCost] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
 
-    const roomPrices = {
+    const roomPrices = useMemo(() => ({
         "Standard Double City View": { adult: 30000, child6To12: 20000, child0To5: 5000 },
         "Superior Twin City View": { adult: 40000, child6To12: 20000, child0To5: 5000 },
         "Superior Twin Sea View": { adult: 50000, child6To12: 30000, child0To5: 10000 },
-    };
-
+    }), []);
+        
     const addChild = () => {
         if (childAge && childNumber) {
             setChildren([...children, { age: parseInt(childAge, 10), number: parseInt(childNumber, 10) }]);
@@ -61,7 +61,7 @@ const RoomForm = () => {
             setChildrenCost(childTotal);
             setTotalPrice(adultTotal + childTotal);
         }
-    }, [roomType, adults, children]);
+    }, [roomType, adults, children,roomPrices]);
 
     return (
         <>
