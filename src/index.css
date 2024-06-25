@@ -41,6 +41,8 @@
   --background-color: #f0f2f5;
   --red-color: #e41e3f;
   --gray-text-color: #65676b;
+  --Color-Usage-Stroke: #E0E0E0;
+  --Gray-White: #FFF;
 
   --black-200: #020202;
   --black-300: #333333;
@@ -55,5 +57,7 @@
   padding: 0;
   scroll-behavior: smooth;
 }
+
+
 
 

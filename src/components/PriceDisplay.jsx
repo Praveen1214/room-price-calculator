@@ -1,34 +1,45 @@
 // src/components/PriceDisplay.js
-import React from 'react';
+import React from "react";
 
-const PriceDisplay = ({ roomType, adults, children }) => {
-    const calculatePrice = () => {
-        let price = 0;
-        switch (roomType) {
-            case 'Standard Double City View':
-                price += 30000 * adults;
-                price += children.filter(age => age >= 6 && age <= 12).length * 20000;
-                price += children.filter(age => age < 6).length * 5000;
-                break;
-            case 'Superior Twin City View':
-                price += 40000 * adults;
-                price += children.filter(age => age >= 6 && age <= 12).length * 20000;
-                price += children.filter(age => age < 6).length * 5000;
-                break;
-            case 'Superior Twin Sea View':
-                price += 50000 * adults;
-                price += children.filter(age => age >= 6 && age <= 12).length * 30000;
-                price += children.filter(age => age < 6).length * 10000;
-                break;
-            default:
-                break;
+const PriceDisplay = ({ adultCost = 0, childrenCost = 0, totalPrice = 0 }) => {
+    const formatCurrency = (value) => {
+        if (typeof value !== 'number') {
+            return ;
         }
-        return price;
+        return `${value.toLocaleString()}`;
     };
 
     return (
-        <div>
-            <h2>Total Price: {calculatePrice()}</h2>
+        <div className="w-full border-b">
+            <h3 className="text-lg font-bold mb-2">Cost</h3>
+            <table className="w-full">
+                <tbody>
+                    <tr className="border-b">
+                        <td className="py-2 font-small">Items</td>
+                        <td className="py-2 font-small text-right">Amount</td>
+                    </tr>
+
+                    <tr>
+                        <td className="py-2">Adult Cost</td>
+                        <td className="py-2 text-right">{formatCurrency(adultCost)}</td>
+                    </tr>
+                    <tr>
+                        <td className="py-2">Children Cost</td>
+                        <td className="py-2 text-right">{formatCurrency(childrenCost)}</td>
+                    </tr>
+                    <tr
+                        className="font-bold mt-12"
+                        style={{
+                            padding: "8px",
+                            borderRadius: "8px",
+                            border: "0.784px solid var(--Color-Usage-Stroke, #E0E0E0)"
+                        }}
+                    >
+                        <td className="py-2">Total Price</td>
+                        <td className="py-2 text-right">{formatCurrency(totalPrice)}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     );
 };

@@ -22,11 +22,11 @@ function App() {
   };
 
   return (
-    <div className="home">
+    <div className="App">
             <Header />
             <main>
                 <RoomForm onUpdate={handleUpdate} />
-                <PriceDisplay roomType={roomType} adults={adults} children={children} />
+                
             </main>
         </div>
   );
