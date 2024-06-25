@@ -3,14 +3,71 @@ import { Icon } from "@iconify/react";
 import PriceDisplay from "./PriceDisplay";
 
 const RoomForm = () => {
-    const [roomType, setRoomType] = useState("");
-    const [adults, setAdults] = useState("");
-    const [children, setChildren] = useState([]);
-    const [childAge, setChildAge] = useState("");
-    const [childNumber, setChildNumber] = useState("");
-    const [adultCost, setAdultCost] = useState(0);
-    const [childrenCost, setChildrenCost] = useState(0);
-    const [totalPrice, setTotalPrice] = useState(0);
+    const [roomType, setRoomType] = useState(localStorage.getItem('roomType'));
+    const [adults, setAdults] = useState(localStorage.getItem('adults'));
+    const [children, setChildren] = useState('');
+    const [childAge, setChildAge] = useState(localStorage.getItem('childAge'));
+    const [childNumber, setChildNumber] = useState(localStorage.getItem('childNumber'));
+    const [adultCost, setAdultCost] = useState(localStorage.getItem('adultCost'));
+    const [childrenCost, setChildrenCost] = useState(localStorage.getItem('childrenCost'));
+    const [totalPrice, setTotalPrice] = useState(localStorage.getItem('totalPrice'));
+
+
+
+    // Function to save form data to Local Storage
+    const saveFormDataToLocalStorage = () => {
+        const formData = {
+            roomType,
+            adults,
+            children,
+            childAge,
+            childNumber,
+            adultCost,
+            childrenCost,
+            totalPrice
+        };
+        localStorage.setItem('formData', JSON.stringify(formData));
+    };
+
+    useEffect(() => {
+        saveFormDataToLocalStorage();
+    }, [roomType, adults, children, childAge, childNumber, adultCost, childrenCost, totalPrice]);
+
+
+    // Function to get form data from Local Storage
+    useEffect(() => {
+        const storedFormData = localStorage.getItem('formData');
+        if (storedFormData) {
+            const parsedFormData = JSON.parse(storedFormData);
+            setRoomType(parsedFormData.roomType || '');
+            setAdults(parsedFormData.adults || '');
+            setChildren(parsedFormData.children || []);
+            setChildAge(parsedFormData.childAge || '');
+            setChildNumber(parsedFormData.childNumber || '');
+            setAdultCost(parsedFormData.adultCost || 0);
+            setChildrenCost(parsedFormData.childrenCost || 0);
+            setTotalPrice(parsedFormData.totalPrice || 0);
+        }
+    }, []);
+
+
+    const isLocalStorageAvailable = () => {
+        try {
+            localStorage.setItem('testKey', 'testValue');
+            localStorage.removeItem('testKey');
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
+    
+    // Usage in your component
+    if (!isLocalStorageAvailable()) {
+        // Handle case where Local Storage is not available
+        console.error('Local Storage is not available.');
+        // Optionally, use alternative storage mechanism or UI/UX fallback
+    }
+    
 
     const roomPrices = useMemo(
         () => ({
@@ -111,6 +168,9 @@ const RoomForm = () => {
             setTotalPrice(0);
         }
     }, [roomType, adults, children, roomPrices]);
+
+
+
 
     return (
         <>
