@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useState, useEffect } from 'react';
 import Header from "./components/Header";
 import RoomForm from "./components/RoomForm";
-import PriceDisplay from "./components/PriceDisplay";
+
 
 function App() {
   const [roomType, setRoomType] = useState(localStorage.getItem('roomType') || 'Standard Double City View');
@@ -22,11 +22,11 @@ function App() {
   };
 
   return (
-    <div className="home">
+    <div className="App">
             <Header />
             <main>
                 <RoomForm onUpdate={handleUpdate} />
-                <PriceDisplay roomType={roomType} adults={adults} children={children} />
+                
             </main>
         </div>
   );

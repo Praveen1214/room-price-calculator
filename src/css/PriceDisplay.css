@@ -1,0 +1,5 @@
+/* src/components/PriceDisplay.css */
+
+.total-price-row td {
+    padding-top: 1rem; /* Adjust this value as needed */
+}
