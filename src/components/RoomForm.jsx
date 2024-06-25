@@ -12,6 +12,58 @@ const RoomForm = () => {
     const [childrenCost, setChildrenCost] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
 
+
+    const saveFormDataToLocalStorage = () => {
+        const formData = {
+            roomType,
+            adults,
+            children,
+            childAge,
+            childNumber,
+            adultCost,
+            childrenCost,
+            totalPrice
+        };
+        localStorage.setItem('formData', JSON.stringify(formData));
+    };
+
+    useEffect(() => {
+        saveFormDataToLocalStorage();
+    }, [roomType, adults, children, childAge, childNumber, adultCost, childrenCost, totalPrice]);
+
+    useEffect(() => {
+        const storedFormData = localStorage.getItem('formData');
+        if (storedFormData) {
+            const parsedFormData = JSON.parse(storedFormData);
+            setRoomType(parsedFormData.roomType || '');
+            setAdults(parsedFormData.adults || '');
+            setChildren(parsedFormData.children || []);
+            setChildAge(parsedFormData.childAge || '');
+            setChildNumber(parsedFormData.childNumber || '');
+            setAdultCost(parsedFormData.adultCost || 0);
+            setChildrenCost(parsedFormData.childrenCost || 0);
+            setTotalPrice(parsedFormData.totalPrice || 0);
+        }
+    }, []);
+
+    const isLocalStorageAvailable = () => {
+        try {
+            localStorage.setItem('testKey', 'testValue');
+            localStorage.removeItem('testKey');
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
+
+    if (!isLocalStorageAvailable()) {
+        console.error('Local Storage is not available.');
+    }
+
+
+
+
+
     const roomPrices = useMemo(
         () => ({
             "Standard Double City View": {
@@ -60,16 +112,35 @@ const RoomForm = () => {
 
     const addChild = () => {
         if (isPositiveInteger(childAge) && isPositiveInteger(childNumber)) {
+            const age = parseInt(childAge, 10);
+            const number = parseInt(childNumber, 10);
+    
+            if (age > 12) {
+                alert("Age should be 12 or below.");
+                return;
+            }
+    
+            const totalChildren = children.reduce((acc, child) => acc + child.number, 0) + number;
+    
+            if (totalChildren > 10) {
+                const isConfirmed = window.confirm("You have added more than 10 children. Are you sure this is correct?");
+                if (!isConfirmed) {
+                    return;
+                }
+            }
+    
             setChildren([
                 ...children,
-                { age: parseInt(childAge, 10), number: parseInt(childNumber, 10) },
+                { age, number },
             ]);
             setChildAge("");
             setChildNumber("");
         } else {
-            alert("Please Enter both valid age and number of children");
+            alert("Please enter both valid age and number of children.");
         }
     };
+    
+    
 
     const resetForm = () => {
         setRoomType("");
