@@ -2,31 +2,30 @@
 
 /* Special functionalities */
 .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .body {
-    background-color: #efefef;
+  background-color: #efefef;
 }
 
 /* src/App.css */
 
 header {
-    background: #333;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    width: 100%;
+  background: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
 }
 main {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 2rem;
 }
 .total-price-row td {
-    padding-top: 1rem; /* Adjust this value as needed */
+  padding-top: 1rem; /* Adjust this value as needed */
 }
-
